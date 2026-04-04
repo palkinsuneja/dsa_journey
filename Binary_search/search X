@@ -1,1 +1,33 @@
+# include <iostream>
+# include <algorithm>
+# include <vector>
+using namespace std;
+int search_target(vector<int>arr, int n, int x ){
+    int s = 0;
+    int e = n-1;
+    int ans = n;
+    while (s<=e){
+        int mid = s + (e-s)/2;
+        if(arr[mid] == x){
+            return mid;
+        }
+        else if(arr[mid]< x){
+            s=mid+1;
+        }
+        else {
+            e=mid-1;
+        }
+    }
+    return -1;
+}
+int main(){
+    int x;
+    vector <int>array = {12,23,32,46,56,67,78,90,100};
+    cout << "enter no. to find :";
+    cin >>  x ;
+    int index_of_x = search_target(array, 9 , x);
+    cout<< "index of target :"<< index_of_x ; 
+
+return 0;
+}
 
