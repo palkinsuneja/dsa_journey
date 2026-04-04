@@ -1,1 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std ;
+int find_lower_bound(vector <int>arr , int x, int n ){ 
+    int s=0;
+    int e=n-1;
+    int ans=n ;
+
+    while (s<=e){
+        int mid = s+ (e-s)/2 ;
+        if(arr[mid]>=x){
+            ans= mid ;
+            e =mid -1;
+        }
+        else {
+            s = mid + 1;
+        }
+    }
+    return ans;
+}
+int main(){
+     vector<int> arr ={24,35,46,52,67,98,100}; // sorted array 
+    int n = arr.size();
+    int x= 47; //target value
+    int ind = find_lower_bound(arr,x,n);
+    cout<< "the lower bound is the index : "<< ind << "\n"; //output 
+    
+    return 0; 
+    }
+
 
