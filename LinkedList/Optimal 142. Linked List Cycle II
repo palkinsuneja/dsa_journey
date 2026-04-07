@@ -1,1 +1,43 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ // Hashing 
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode * tortoise_slow = head; // slow pointer 
+        ListNode * hare_fast = head; // fast pointer 
 
+        while (hare_fast != NULL && hare_fast->next != NULL){
+            tortoise_slow = tortoise_slow -> next; // slow ka 1 step
+            hare_fast= hare_fast-> next -> next;  // fast ke 2 step 
+            if(tortoise_slow == hare_fast){
+                tortoise_slow = head;
+                while (tortoise_slow != hare_fast){ // jb tk slow fast same position pe nhi aajate tb tk loop chlao !
+                    // jaha true return krna tha vaha step 2 aajayega that is slow ya fast me se ek ko head pe le aao
+                    tortoise_slow = tortoise_slow -> next; // then slow -> 1 step 
+                    hare_fast =hare_fast -> next; // fast bhi -> 1 step 
+                }
+                return tortoise_slow; // jb phr se tortoise_slow == hare_fast mtlb vo starting node hai cycle ki return that ..
+            }
+        }
+       return NULL;
+    }
+};
+/* BRUTE
+ map<ListNode * , int > visited;
+        ListNode * temp= head;
+        while(temp!=NULL){
+            if(visited.find(temp)!= visited.end()){
+                return temp;
+            }
+            visited[temp]= 1;
+            temp = temp -> next;
+        }
+        return NULL; // just like we returned false for no cycle 
+*/
