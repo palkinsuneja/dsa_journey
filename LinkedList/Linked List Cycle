@@ -5,6 +5,19 @@
  *     ListNode *next;
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
+agar cycle hai:
+    fast slow ko pakad lega (due to speed difference)
+
+agar cycle nahi hai:
+    fast NULL tak pahunch jayega
+
+	slow → 1 step ✔️
+	•	fast → 2 step ✔️
+	•	agar mile → cycle ✔️
+	•	agar fast null pe pahunch gaya → no cycle ✔️
+"If a cycle exists, fast pointer will eventually meet slow pointer
+due to relative speed difference."
+
  */
 class Solution {
 public:
