@@ -22,7 +22,7 @@ due to relative speed difference."
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        if(head == NULL) return false;
+        if(head == NULL) return false; // khali list
 
         ListNode* slow = head;
         ListNode* fast = head;
@@ -36,6 +36,6 @@ public:
             }
         }
 
-        return false; // 🔥 no cycle
+        return false; // 🔥 no cycle // agar true nhi aaya or loop khtm to mtlb cycle nhi h to return false
     }
 };
