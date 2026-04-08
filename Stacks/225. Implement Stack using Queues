@@ -20,32 +20,57 @@
 // top = O(1)
 class MyStack {
 public:
-    queue<int> q;
+    
+    queue<int> q;  // ek hi queue use karenge
 
-    MyStack() {}
-
+    // constructor
+    MyStack() {
+        
+    }
+    
+    // 🔥 PUSH operation
     void push(int x) {
+        
+        // step 1: new element queue me daalo
         q.push(x);
+        
+        // step 2: current size nikalo
         int size = q.size();
-
-        // rotate previous elements
+        
+        // step 3: purane elements ko rotate karo
+        // taaki new element front pe aa jaye
         for(int i = 0; i < size - 1; i++) {
-            q.push(q.front());
-            q.pop();
+            
+            q.push(q.front());  // front ko back me daal diya
+            q.pop();            // front hata diya
+            
         }
+        
+        // ✅ ab latest element front pe hai → stack top
     }
-
+    
+    // 🔥 POP operation
     int pop() {
-        int top = q.front();
-        q.pop();
-        return top;
+        
+        // front hi top hai (kyunki rotate kiya tha)
+        int topElement = q.front();
+        
+        q.pop();  // remove
+        
+        return topElement;
     }
-
+    
+    // 🔥 TOP operation
     int top() {
+        
+        // directly front return
         return q.front();
     }
-
+    
+    // 🔥 EMPTY check
     bool empty() {
+        
         return q.empty();
     }
 };
+       
