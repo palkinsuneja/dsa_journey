@@ -1,4 +1,27 @@
 /** OPTIMAL approach
+🔥 Interview Line
+"I used two pointers to segregate odd and even nodes in-place and 
+finally connected both lists"🔥 
+
+3 pointers use:
+1. odd → first node
+2. even → second node
+3. evenHead → even list का start
+
+Odd pointer → skip करके next odd जोड़ता है  
+Even pointer → skip करके next even जोड़ता है  
+
+End में:
+Odd list + Even list connect
+
+👉 Nodes rearrange हो रहे हैं (values नहीं बदल रहे)
+👉 In-place solution
+👉 No extra space
+
+if(head == NULL || head->next == NULL)
+    return head;
+Time: O(n)  
+Space: O(1)
 
  * Definition for singly-linked list.
  * struct ListNode {
