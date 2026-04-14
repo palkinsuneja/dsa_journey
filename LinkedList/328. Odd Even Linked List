@@ -1,4 +1,7 @@
 /** OPTIMAL approach
+
+// TAGS: LinkedList, TwoPointers, InPlace
+
 🔥 Interview Line
 "I used two pointers to segregate odd and even nodes in-place and 
 finally connected both lists"🔥 
