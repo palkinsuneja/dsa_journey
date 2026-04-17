@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int reverseNum(int x) {
+        int y = 0;
+        while (x > 0) {
+            y = y * 10 + x % 10;
+            x /= 10;
+        }
+        return y;
+    }
+
+    int minMirrorPairDistance(vector<int>& nums) {
+        unordered_map<int, int> lastPos;
+        int ans = INT_MAX;
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (lastPos.count(nums[i])) {
+                ans = min(ans, i - lastPos[nums[i]]);
+            }
+            lastPos[reverseNum(nums[i])] = i;
+        }
+
+        return ans == INT_MAX ? -1 : ans;
+    }
+};
