@@ -1,1 +1,136 @@
+Brute:
+A ka har node → B me check (O(n*m))
 
+Better:
+Set use karo (O(n+m), space O(n))
+
+Length:
+length equal karo → saath chalo
+
+Optimal:
+head swap → equal path → meet
+
+//🧠 1. BRUTE (O(n*m)) ❌ slow
+// 🔴 BRUTE APPROACH
+// हर node of A को B में ढूंढो
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+
+        ListNode* a = headA;
+
+        while(a != NULL) {              // A ke har node pe jao
+            ListNode* b = headB;
+
+            while(b != NULL) {          // B me traverse karo
+                if(a == b) return a;    // same node mila → intersection
+                b = b->next;
+            }
+
+            a = a->next;
+        }
+
+        return NULL;                    // koi intersection nahi
+    }
+};
+
+//🧠 2. BETTER (HashSet) ⚡
+// 🟡 BETTER APPROACH (using set)
+// A ke nodes store karo → B me check karo
+
+#include <unordered_set>
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+
+        unordered_set<ListNode*> st;
+
+        while(headA) {
+            st.insert(headA);           // A ke nodes store
+            headA = headA->next;
+        }
+
+        while(headB) {
+            if(st.count(headB))         // B ka node agar set me hai
+                return headB;           // → intersection
+            headB = headB->next;
+        }
+
+        return NULL;
+    }
+};
+
+// 🧠 3. LENGTH METHOD (O(n+m), O(1)) 💯
+// 🟢 LENGTH DIFFERENCE APPROACH
+// Pehle lengths equal karo → fir saath traverse
+
+class Solution {
+public:
+
+    int getLength(ListNode* head) {
+        int len = 0;
+        while(head) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+
+        int lenA = getLength(headA);
+        int lenB = getLength(headB);
+
+        ListNode* a = headA;
+        ListNode* b = headB;
+
+        // 🔥 length equal karo
+        if(lenA > lenB) {
+            int diff = lenA - lenB;
+            while(diff--) a = a->next;  // A ko aage badhao
+        } else {
+            int diff = lenB - lenA;
+            while(diff--) b = b->next;  // B ko aage badhao
+        }
+
+        // 🔥 ab same level pe compare karo
+        while(a && b) {
+            if(a == b) return a;        // same node mila
+            a = a->next;
+            b = b->next;
+        }
+
+        return NULL;
+    }
+};
+
+
+//🚀 4. OPTIMAL (Two Pointer Swap) 🔥🔥
+// 🟢 OPTIMAL APPROACH (Two Pointer Magic)
+// length calculate nahi karte → automatically equalize
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+
+        ListNode* a = headA;
+        ListNode* b = headB;
+
+        // 🔥 jab tak same node pe nahi milte
+        while(a != b) {
+
+            // agar a end pe pahunch gaya → B se start
+            // warna next pe move
+            a = (a == NULL) ? headB : a->next;
+
+            // agar b end pe pahunch gaya → A se start
+            // warna next pe move
+            b = (b == NULL) ? headA : b->next;
+        }
+
+        // 🔥 yaha ya toh intersection milega ya NULL
+        return a;   // (return b bhi kar sakte ho)
+    }
+};
