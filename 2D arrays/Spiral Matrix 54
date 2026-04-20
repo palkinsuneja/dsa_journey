@@ -1,1 +1,69 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int m = matrix.size();      // total rows
+        int n = matrix[0].size();   // total cols
+        vector<int> result; 
+        
+        int top = 0;        // first row boundary
+        int bottom = m-1;   // last row boundary
+        int left = 0;       // first col boundary
+        int right = n-1;    // last col boundary
+        
+        // jab tak boundaries valid hain tab tak spiral chalti rahegi
+        while(top <= bottom && left <= right){
+            
+            // Step 1: left → right (top row)
+            // row fix = top, col change = i
+            for(int i = left; i <= right; i++){
+                result.push_back(matrix[top][i]);
+            }
+            top++; // top row consumed, boundary andar karo
+            
+            // Step 2: top → bottom (right col)
+            // col fix = right, row change = i
+            for(int i = top; i <= bottom; i++){
+                result.push_back(matrix[i][right]);
+            }
+            right--; // right col consumed, boundary andar karo
+            
+            // Step 3: right → left (bottom row)
+            // col fix = bottom, col change = i (i-- bcoz right to left)
+            // Extra check: top++ ho chuka hai andar, single row case mein
+            // dobara collect hone se bachao
+            if(top <= bottom){
+                for(int i = right; i >= left; i--){
+                    result.push_back(matrix[bottom][i]);
+                }
+                bottom--; // bottom row consumed
+            }
+            
+            // Step 4: bottom → top (left col)
+            // col fix = left, row change = i (i-- bcoz bottom to top)
+            // Extra check: right-- ho chuka hai andar, single col case mein
+            // dobara collect hone se bachao
+            if(left <= right){
+                for(int i = bottom; i >= top; i--){
+                    result.push_back(matrix[i][left]);
+                }
+                left++; // left col consumed
+            }
+        }
+        
+        return result;
+    }
+};
 
+/*
+KEY INSIGHT:
+matrix[row][col] — row pehle, col baad mein
+
+Top row    → matrix[top][i]    row fix, col change
+Right col  → matrix[i][right]  row change, col fix  
+Bottom row → matrix[bottom][i] row fix, col change
+Left col   → matrix[i][left]   row change, col fix
+
+Step 1,2 → while loop handle karta hai overlap
+Step 3,4 → extra if() zaroori hai kyunki top/right
+           already change ho chuke hote hain andar
+*/
