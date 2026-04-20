@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int diagonalSum(vector<vector<int>>& mat) {
+        int n = mat.size();  // declare matrix row ye sq h to m==n == i ho jayega 
+        int resultSum = 0;  // sum initialize kia 0 se kunki sum kr rhe h iske baad isme to 0 ke baad 
+                                       // agar multiplication hota formula me to 1 se initialize krte ! 
+        for(int i = 0 ; i < n ; i++){ 
+            resultSum +=  mat[i][i] + mat[i][n-1-i];  // += means (resultSum =  resultSum + mat[i][i] + mat[i][n-1-i];) har loop me sum update ho rha h 
+        }
+        if (n%2 != 0){  // condition if odd
+            return resultSum - mat[n/2][n/2];  // middle element minus krna padega nhi to 2 baar add hojayega 
+        }
+        return resultSum ;
+    }
+};
