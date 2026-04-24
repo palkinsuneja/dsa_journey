@@ -12,3 +12,4 @@ public:
         return abs(left - right) + blank;
     }
 };
+// hahaha
