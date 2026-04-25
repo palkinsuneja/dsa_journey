@@ -1,0 +1,89 @@
+class Solution {
+public:
+    struct Sequence {
+        int startX, startY;
+        int endX, endY;
+        int length;
+    };
+
+    int maxDistance(int side, vector<vector<int>>& points, int k) {
+        vector<pair<int, int>> ordered = getOrderedPoints(side, points);
+
+        int lo = 0, hi = side;
+        while (lo < hi) {
+            int mid = lo + (hi - lo + 1) / 2;
+            if (isValidDistance(ordered, k, mid)) {
+                lo = mid;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return lo;
+    }
+
+private:
+    long long dist(int x1, int y1, int x2, int y2) {
+        return llabs(1LL * x1 - x2) + llabs(1LL * y1 - y2);
+    }
+
+    bool isValidDistance(const vector<pair<int, int>>& ordered, int k, int d) {
+        deque<Sequence> dq;
+        dq.push_back({ordered[0].first, ordered[0].second,
+                      ordered[0].first, ordered[0].second, 1});
+
+        int best = 1;
+
+        for (int i = 1; i < (int)ordered.size(); ++i) {
+            int x = ordered[i].first;
+            int y = ordered[i].second;
+
+            int startX = x, startY = y, len = 1;
+
+            while (!dq.empty() &&
+                   dist(x, y, dq.front().endX, dq.front().endY) >= d) {
+                if (dist(x, y, dq.front().startX, dq.front().startY) >= d &&
+                    dq.front().length + 1 >= len) {
+                    startX = dq.front().startX;
+                    startY = dq.front().startY;
+                    len = dq.front().length + 1;
+                    best = max(best, len);
+                }
+                dq.pop_front();
+            }
+
+            dq.push_back({startX, startY, x, y, len});
+        }
+
+        return best >= k;
+    }
+
+    vector<pair<int, int>> getOrderedPoints(int side, vector<vector<int>>& points) {
+        vector<pair<int, int>> left, top, right, bottom;
+
+        for (auto& p : points) {
+            int x = p[0], y = p[1];
+            if (x == 0 && y > 0) {
+                left.push_back({x, y});
+            } else if (x > 0 && y == side) {
+                top.push_back({x, y});
+            } else if (x == side && y < side) {
+                right.push_back({x, y});
+            } else {
+                bottom.push_back({x, y});
+            }
+        }
+
+        sort(left.begin(), left.end());
+        sort(top.begin(), top.end());
+        sort(right.begin(), right.end(), greater<pair<int, int>>());
+        sort(bottom.begin(), bottom.end(), greater<pair<int, int>>());
+
+        vector<pair<int, int>> ordered;
+        ordered.insert(ordered.end(), left.begin(), left.end());
+        ordered.insert(ordered.end(), top.begin(), top.end());
+        ordered.insert(ordered.end(), right.begin(), right.end());
+        ordered.insert(ordered.end(), bottom.begin(), bottom.end());
+
+        return ordered;
+    }
+};
