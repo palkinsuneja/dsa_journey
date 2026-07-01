@@ -1,0 +1,34 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev = NULL;
+        ListNode* current = head;
+        //ListNode* next = NULL;
+        //ListNode* temp = current->next;
+        while(current != NULL){
+            ListNode* temp = current -> next; // temp ko current ka next dia taki current ke aage vali ll gum na ho .
+            current -> next = prev;// direc tion chnge
+            prev = current; //[prev ++]
+            current = temp; // [current ++]
+
+        }
+         
+        return prev;
+    }
+};
+
+//✅ temp/next loop mein kyunki har baar change hoga
+//✅ curr->next = prev → direction reverse kiya
+//✅ prev = curr → address store kiya
+//✅ curr = temp → aage badhe saved address se
+//✅ Naya loop mein temp naya curr->next pakdega
