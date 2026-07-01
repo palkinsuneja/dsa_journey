@@ -17,13 +17,14 @@ public:
         //ListNode* temp = current->next;
         while(current != NULL){
             ListNode* temp = current -> next; // temp ko current ka next dia taki current ke aage vali ll gum na ho .
+// sbse phle kunki bache hue nodes gum nhi hone chaahiye we dont have indexes in ll 
             current -> next = prev;// direc tion chnge
             prev = current; //[prev ++]
             current = temp; // [current ++]
-
+// order should be same kunki logic h ratna nhi h and iu knowthe logic ...
         }
          
-        return prev;
+        return prev; // prev new head h mtlb last pe aagya h 
     }
 };
 
