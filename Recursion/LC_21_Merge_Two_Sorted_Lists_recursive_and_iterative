@@ -1,3 +1,11 @@
+
+cd dsa_journey
+cd Recursion
+nano filename.cpp
+git add .
+git commit -m "message"
+git push
+
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
