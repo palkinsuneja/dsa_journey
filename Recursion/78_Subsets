@@ -1,24 +1,59 @@
 class Solution {
 public:
-    void solve(vector<int>& nums, vector<int> output, int index, vector<vector<int>>& ans){
+    // helper function jo recursively subsets banati hai
+    // output = current subset jo ban raha hai
+    // index = abhi kaunsa element process kar rahe hain
+    // ans = saare subsets ka collection
+    void solve(vector<int>& nums, vector<int> output, 
+               int index, vector<vector<int>>& ans){
+        
+        // base case: saare elements dekh liye
+        // jo output bana hai wo ek complete subset hai
         if(index >= nums.size()){
             ans.push_back(output);
             return;
         }
+        
+        // CHOICE 1: current element ko EXCLUDE karo
+        // output mein kuch add nahi, seedha aage jao
         solve(nums, output, index+1, ans);
-
-        int element = nums[index];
-        output.push_back(element);
-
+        
+        // CHOICE 2: current element ko INCLUDE karo
+        // output mein add karo, phir aage jao
+        output.push_back(nums[index]);
         solve(nums, output, index+1, ans);
+        
+        // output by value pass hai isliye pop_back nahi kiya
+        // har recursive call ki apni copy hoti hai output ki
     }
+    
     vector<vector<int>> subsets(vector<int>& nums) {
-        vector<vector<int>> ans ;
-        vector<int> output;
-        int index = 0;
-
+        vector<vector<int>> ans;  // saare subsets yahan store honge
+        vector<int> output;       // current subset (shuru mein khali)
+        int index = 0;            // pehle element se shuru
+        
         solve(nums, output, index, ans);
-
+        
         return ans;
     }
 };
+
+/*
+INTUITION:
+Har element ke liye 2 choices:
+  1. EXCLUDE → output mein mat daalo, aage badho
+  2. INCLUDE → output mein daalo, aage badho
+
+Total subsets = 2^n (n = array size)
+[1,2,3] → 2^3 = 8 subsets ✅
+
+KEY POINT:
+output by VALUE pass hai → har call ki apni copy
+isliye include ke baad pop_back() zarori nahi!
+
+Agar by REFERENCE pass karte → pop_back() karna padta
+(backtracking pattern)
+
+TIME:  O(2^n) → har element pe 2 choices
+SPACE: O(n)   → recursion depth = n
+*/
