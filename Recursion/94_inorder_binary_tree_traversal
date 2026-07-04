@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        // base case: node nahi hai to khali vector return karo
+        if(root == NULL) return {};
+        
+        vector<int> result;
+        
+        // pehle LEFT subtree traverse karo (Left pehle!)
+        vector<int> left = inorderTraversal(root->left);
+        result.insert(result.end(), left.begin(), left.end());
+        
+        // phir ROOT ki value add karo (beech mein!)
+        result.push_back(root->val);
+        
+        // phir RIGHT subtree traverse karo
+        vector<int> right = inorderTraversal(root->right);
+        result.insert(result.end(), right.begin(), right.end());
+        
+        return result;
+    }
+};
+
+/*
+INORDER = Left → Root → Right
+
+EXAMPLE:
+        1
+       / \
+      2   3
+     / \
+    4   5
+
+Inorder: 4, 2, 5, 1, 3
+
+FUN FACT:
+BST (Binary Search Tree) ka inorder traversal
+hamesha SORTED order deta hai! 🎯
+
+Pre  → Root pehle  → 1,2,4,5,3
+In   → Root beech  → 4,2,5,1,3  ← sorted in BST!
+Post → Root baad   → 4,5,2,3,1
+*/
