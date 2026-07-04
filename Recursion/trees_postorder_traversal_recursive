@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        // base case: node nahi hai to khali vector return karo
+        if(root == NULL) return {};
+        
+        vector<int> result;
+        
+        // pehle LEFT subtree traverse karo
+        vector<int> left = postorderTraversal(root->left);
+        result.insert(result.end(), left.begin(), left.end());
+        
+        // phir RIGHT subtree traverse karo
+        vector<int> right = postorderTraversal(root->right);
+        result.insert(result.end(), right.begin(), right.end());
+        
+        // LAST mein ROOT ki value add karo (Root baad mein!)
+        result.push_back(root->val);
+        
+        return result;
+    }
+};
+
+/*
+POSTORDER = Left → Right → Root
+
+EXAMPLE:
+        1
+       / \
+      2   3
+     / \
+    4   5
+
+Postorder: 4, 5, 2, 3, 1
+
+USE CASE:
+Tree delete karna ho — pehle children delete karo
+phir parent! Isliye postorder use hota hai.
+(Post-order = kaam baad mein, recursion pehle)
+
+TEENO TRAVERSALS COMPARE:
+Pre  → Root pehle  → 1,2,4,5,3
+In   → Root beech  → 4,2,5,1,3
+Post → Root baad   → 4,5,2,3,1
+
+Sirf root ki push_back ki position change hoti hai! 🎯
+*/
