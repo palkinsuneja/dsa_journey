@@ -1,0 +1,64 @@
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        // base case: khali tree hai to khali vector return karo
+        if(root == NULL) return {};
+        
+        queue<TreeNode*> q;       // BFS ke liye queue
+        vector<vector<int>> ans;  // saare levels store honge yahan
+        
+        // root se shuru karo
+        q.push(root);
+        
+        // jab tak queue mein nodes hain
+        while(!q.empty()){
+            vector<int> level;       // current level ke nodes
+            int size = q.size();     // is level mein kitne nodes hain
+            
+            // current level ke saare nodes process karo
+            for(int i = 0; i < size; i++){
+                TreeNode* front = q.front();  // pehla node nikalo
+                q.pop();                       // queue se hatao
+                
+                level.push_back(front->val);   // value save karo
+                
+                // next level ke liye children queue mein daalo
+                if(front->left)  q.push(front->left);   // left child
+                if(front->right) q.push(front->right);  // right child
+            }
+            
+            // ek poora level complete hua — ans mein add karo
+            ans.push_back(level);
+        }
+        
+        return ans;
+    }
+};
+
+/*
+LEVEL ORDER = BFS (Breadth First Search)
+
+DFS (recursion) → ek branch mein poora neeche jaao
+BFS (queue)     → level by level chalo
+
+KEY INSIGHT:
+q.size() = current level mein kitne nodes hain!
+Isliye size store karte hain pehle — loop ke andar
+q.size() change hoti rehti hai jab children push hote hain
+
+EXAMPLE:
+        1
+       / \
+      2   3
+     / \
+    4   5
+
+Queue:  [1]      → level=[1]    → push 2,3
+Queue:  [2,3]    → level=[2,3]  → push 4,5
+Queue:  [4,5]    → level=[4,5]  → no children
+
+ans = [[1],[2,3],[4,5]] ✅
+
+TIME:  O(n) — har node ek baar visit
+SPACE: O(n) — queue mein max n/2 nodes (last level)
+*/
