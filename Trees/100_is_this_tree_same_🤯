@@ -1,0 +1,37 @@
+/*
+ * LeetCode 100 - Same Tree (Easy)
+ *
+ * INTUITION:
+ * Dono trees pe EK SAATH chalo. Har node-pair pe 3 situations:
+ *   1. Dono NULL  -> khali == khali -> true
+ *   2. Ek NULL    -> structure alag -> false
+ *   3. Dono hain  -> values compare + left/right recursion
+ *
+ * Sirf values match hona kaafi NAHI — STRUCTURE bhi same chahiye.
+ * Ex: p=[1,2], q=[1,null,2] -> values same, answer false.
+ *
+ * KEY LEARNING (Invert vs Same Tree):
+ * - Invert mein recursion WORKER thi (kaam karke aati thi, return ignore).
+ * - Yahan recursion REPORTER hai (true/false laati hai) — report ko
+ *   && se jodna zaroori, warna Wrong Answer.
+ * - Khud pakda bug: leftans == rightans GALAT (false==false bhi true!).
+ *   Chahiye: leftans && rightans — "dono agree" nahi, "dono TRUE".
+ *
+ * Time:  O(n) | Space: O(h) - recursion stack
+ */
+
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        // Dono khatam ek saath -> ab tak sab match tha
+        if (p == NULL && q == NULL) return true;
+
+        // Ek khatam, ek baaki -> structure mismatch
+        if (p == NULL || q == NULL) return false;
+
+        // Teeno reports ek saath: value + left report + right report
+        return (p->val == q->val)
+            && isSameTree(p->left, q->left)
+            && isSameTree(p->right, q->right);
+    }
+};
