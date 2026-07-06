@@ -1,0 +1,36 @@
+/*
+ * LeetCode 226 - Invert Binary Tree (Easy)
+ *
+ * INTUITION:
+ * Tree ka mirror banana hai. Global picture mein har level reversed
+ * dikhta hai, lekin LOCAL operation sirf ek hai:
+ *   "Har node apne left aur right bache SWAP kar de."
+ * Recursion ye chhota kaam har node tak khud pahuncha deti hai
+ * (domino effect) — kisi specific node ko target nahi karna padta.
+ *
+ * KEY LEARNING:
+ * - Recursive call hamesha CHHOTE problem pe (root->left, root->right).
+ *   invertTree(root) likha toh infinite recursion!
+ * - Swap pehle ya recursion pehle — dono chalta hai, kyunki dono
+ *   independent operations hain. Har node exactly ek baar swap hota hai.
+ *
+ * Time:  O(n) - har node ek baar
+ * Space: O(h) - recursion stack (worst O(n) skewed tree mein)
+ */
+
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        // Base case: NULL ka invert NULL hi hai
+        if (root == NULL) return root;
+
+        // Recursion pe bharosa: dono subtrees khud invert honge
+        invertTree(root->left);
+        invertTree(root->right);
+
+        // Root ka local kaam: bache swap
+        swap(root->left, root->right);
+
+        return root;
+    }
+};
