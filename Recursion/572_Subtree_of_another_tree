@@ -1,0 +1,42 @@
+/*
+ * LeetCode 572 - Subtree of Another Tree (Easy)
+ *
+ * INTUITION:
+ * Do zimmedariyan, do functions:
+ *   1. isSubtree  -> GHOOMNA: bade tree ke har node pe pahuncho
+ *   2. isSameTree -> COMPARE: us node se poora subtree subRoot jaisa hai?
+ * Har node pe poocho: "kya yahan se shuru hone wala subtree == subRoot?"
+ * Nahi? Toh left mein dhundo YA right mein dhundo.
+ *
+ * KEY LEARNING:
+ * - Same Tree ka && tha (SAB match chahiye), yahan || hai (koi EK jagah kaafi).
+ * - Parent ka mismatch bachon ke baare mein kuch nahi batata —
+ *   comparison early-exit kar sakti hai, traversal nahi.
+ * - Purana solution (LC 100) helper ban gaya — naye problems purane
+ *   solutions ke upar bante hain.
+ *
+ * Time:  O(n * m) worst case — n nodes pe traversal, har node pe m-size compare
+ * Space: O(h) — recursion stack
+ */
+
+class Solution {
+public:
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        // Base case: khali tree mein subRoot nahi mil sakta
+        if (root == NULL) return false;
+
+        // Yahan match? YA left mein kahin? YA right mein kahin?
+        return isSameTree(root, subRoot)
+            || isSubtree(root->left, subRoot)
+            || isSubtree(root->right, subRoot);
+    }
+
+    // Helper: LC 100 se reuse, zero changes
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if (p == NULL && q == NULL) return true;
+        if (p == NULL || q == NULL) return false;
+        return (p->val == q->val)
+            && isSameTree(p->left, q->left)
+            && isSameTree(p->right, q->right);
+    }
+};
