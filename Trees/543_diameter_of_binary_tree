@@ -1,0 +1,87 @@
+/*
+ * LeetCode 543 - Diameter of Binary Tree (Easy)
+ *
+ * INTUITION:
+ * Do endpoints DHUNDNE nahi hain. Har path ka ek "peak" hota hai —
+ * sabse upar wala node jahan path mudta hai. Har node se poocho:
+ * "agar longest path TUMHARE through jaaye toh kitna?" = leftDepth + rightDepth.
+ * Sab peaks ka max = diameter.
+ *
+ * KEY LEARNING (Worker + Reporter EK SAATH):
+ * - Scoreboard line (worker): diameter = max(diameter, L + R)
+ *   -> peak pe path MUD sakta hai, isliye dono arms ka jod (+)
+ * - Return line (reporter): return 1 + max(L, R)
+ *   -> parent ke liye main sirf EK seedha arm hoon (fork nahi de sakta)
+ *   -> +1 = mera apna edge jo mujhe mere lambe bache se jodta hai
+ * - Ye "har node pe local compute + global best track" pattern
+ *   LC 124 (Max Path Sum, Hard) mein hu-ba-hu repeat hota hai.
+ *
+ * Time:  O(n) - har node ek baar
+ * Space: O(h) - recursion stack
+ */
+
+class Solution {
+public:
+    int diameter = 0;  // global scoreboard
+
+    int diameterOfBinaryTree(TreeNode* root) {
+        depth(root);        // traversal chalao — scoreboard khud bharega
+        return diameter;    // depth ka return value yahan use NAHI hota
+    }
+
+    int depth(TreeNode* root) {
+        if (root == NULL) return 0;
+
+        int leftDepth  = depth(root->left);
+        int rightDepth = depth(root->right);
+
+        // WORKER: main ek peak hoon — mera score = dono arms ka jod
+        diameter = max(diameter, leftDepth + rightDepth);
+
+        // REPORTER: parent ko sirf ek seedha arm + mera apna edge (+1)
+        return 1 + max(leftDepth, rightDepth);
+    }
+};/*
+ * LeetCode 543 - Diameter of Binary Tree (Easy)
+ *
+ * INTUITION:
+ * Do endpoints DHUNDNE nahi hain. Har path ka ek "peak" hota hai —
+ * sabse upar wala node jahan path mudta hai. Har node se poocho:
+ * "agar longest path TUMHARE through jaaye toh kitna?" = leftDepth + rightDepth.
+ * Sab peaks ka max = diameter.
+ *
+ * KEY LEARNING (Worker + Reporter EK SAATH):
+ * - Scoreboard line (worker): diameter = max(diameter, L + R)
+ *   -> peak pe path MUD sakta hai, isliye dono arms ka jod (+)
+ * - Return line (reporter): return 1 + max(L, R)
+ *   -> parent ke liye main sirf EK seedha arm hoon (fork nahi de sakta)
+ *   -> +1 = mera apna edge jo mujhe mere lambe bache se jodta hai
+ * - Ye "har node pe local compute + global best track" pattern
+ *   LC 124 (Max Path Sum, Hard) mein hu-ba-hu repeat hota hai.
+ *
+ * Time:  O(n) - har node ek baar
+ * Space: O(h) - recursion stack
+ */
+
+class Solution {
+public:
+    int diameter = 0;  // global scoreboard
+
+    int diameterOfBinaryTree(TreeNode* root) {
+        depth(root);        // traversal chalao — scoreboard khud bharega
+        return diameter;    // depth ka return value yahan use NAHI hota
+    }
+
+    int depth(TreeNode* root) {
+        if (root == NULL) return 0;
+
+        int leftDepth  = depth(root->left);
+        int rightDepth = depth(root->right);
+
+        // WORKER: main ek peak hoon — mera score = dono arms ka jod
+        diameter = max(diameter, leftDepth + rightDepth);
+
+        // REPORTER: parent ko sirf ek seedha arm + mera apna edge (+1)
+        return 1 + max(leftDepth, rightDepth);
+    }
+};
