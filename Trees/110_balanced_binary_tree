@@ -1,0 +1,47 @@
+/*
+ * LeetCode 110 - Balanced Binary Tree (Easy)
+ *
+ * INTUITION:
+ * Balanced = HAR node pe |leftDepth - rightDepth| <= 1.
+ * Root pe balanced dikh sakta hai lekin neeche kahin toota ho —
+ * isliye har node ka check zaroori (mera pen-paper example proof hai).
+ *
+ * PATTERN (Diameter LC 543 ka bhai):
+ * - Wahi depth function, wahi structure — sirf scoreboard alag:
+ *   Diameter: diameter = max(diameter, L+R)
+ *   Balanced: if (abs(L-R) > 1) balanced = false
+ * - depth() int return karta hai, isliye wo khud false return NAHI
+ *   kar sakta — global bool pe note karta hai. (Type discipline!)
+ *
+ * KEY LEARNING (khud pakda bug):
+ * - Base case likhna bhool gayi -> NULL pe root->left manga -> crash.
+ *   Rule: recursion likhte waqt SABSE PEHLE base case, phir baaki.
+ * - abs() zaroori hai: bina uske -3 > 1 false hota aur
+ *   right-heavy unbalanced node bach nikalta.
+ *
+ * Time:  O(n) | Space: O(h) - recursion stack
+ */
+
+class Solution {
+public:
+    bool balanced = true;   // global scoreboard
+
+    bool isBalanced(TreeNode* root) {
+        depth(root);         // traversal — scoreboard khud bharega
+        return balanced;
+    }
+
+    int depth(TreeNode* root) {
+        // Base case PEHLE — recursion ka darwaza
+        if (root == NULL) return 0;
+
+        int leftDepth  = depth(root->left);
+        int rightDepth = depth(root->right);
+
+        // Scoreboard: is node pe rule toota?
+        if (abs(leftDepth - rightDepth) > 1) balanced = false;
+
+        // Reporter: parent ko apni depth
+        return 1 + max(leftDepth, rightDepth);
+    }
+};
