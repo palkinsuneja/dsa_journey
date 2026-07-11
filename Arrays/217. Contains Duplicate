@@ -1,0 +1,11 @@
+class Solution {
+public:
+//In teeno ka trade-off ek line mein bolna aana chahiye: sorting kam memory, set kam time — interviewer "what if memory is tight?" pooche toh sorting wala jawab hai. Ye script pocket mein rakho.
+    bool containsDuplicate(vector<int>& nums) {
+        int n = nums.size();
+        unordered_set<int> s(nums.begin(), nums.end()); //// array se set — duplicates khud gir jate hain
+        if (s.size() == nums.size()) return false;// mtlb set ka size bhi same h to duplicate nhi h to koi element drop nhi hua h isiliye no duplicates -> false
+
+        return true;
+    }
+};
