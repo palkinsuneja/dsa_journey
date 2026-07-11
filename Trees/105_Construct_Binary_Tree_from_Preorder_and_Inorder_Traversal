@@ -1,0 +1,58 @@
+/*
+ * LeetCode 105 - Construct Binary Tree from Preorder & Inorder (Medium)
+ *
+ * INTUITION (pen-paper se nikli):
+ * - Preorder ka PEHLA element = root (Root-Left-Right)
+ * - Inorder mein root ke BAAYEIN = poora left subtree,
+ *   DAAYEIN = poora right subtree (Left-Root-Right)
+ * - idx (root ki inorder position) = left subtree ki GINTI,
+ *   isi ginti se preorder ke tukde bhi cut hote hain:
+ *   preorder = [ROOT][...left ke idx log...][...baaki right...]
+ * - Har tukde pe same kaam recursively -> poora tree.
+ *
+ * PROOF ki dono traversals kyun chahiye:
+ * [1,2] preorder toh 1-left-2 aur 1-right-2 dono ka same hai —
+ * inorder ([2,1] vs [1,2]) hi ambiguity todta hai.
+ *
+ * KEY LEARNINGS:
+ * - Copy-constructor ranges EXCLUSIVE-end hoti hain: "aakhri banda + 1"
+ *   tak likho. -1 lagaya toh idx=0 pe ulti range -> length_error crash.
+ * - Variable scope: idx loop ke BAHAR declare, andar sirf update
+ *   (int dobara likha toh shadowing — naya ban jata hai).
+ *
+ * COMPLEXITY (ye BRUTE hai — meri approach):
+ * Time: O(n^2) — har node pe linear search + vector copies
+ * Optimal upgrade (pata hona chahiye): hashmap se root O(1) mein +
+ * naye vectors ki jagah start/end indexes -> O(n). Concept same rehta hai.
+ */
+
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        // Base case: khali hissa -> koi tree nahi banta
+        if (inorder.empty()) return NULL;
+
+        // Preorder ka pehla = is subtree ka root
+        TreeNode* root = new TreeNode(preorder[0]);
+
+        // Root ko inorder mein dhundo (brute: linear search)
+        int idx = 0;
+        for (int i = 0; i < inorder.size(); i++) {
+            if (root->val == inorder[i]) { idx = i; break; }
+        }
+
+        // Inorder ke tukde: [0..idx) left, [idx+1..end) right
+        vector<int> leftIN(inorder.begin(), inorder.begin() + idx);
+        vector<int> rightIN(inorder.begin() + idx + 1, inorder.end());
+
+        // Preorder ke tukde GINTI se: root ke baad idx log left ke
+        vector<int> leftpre(preorder.begin() + 1, preorder.begin() + 1 + idx);
+        vector<int> rightpre(preorder.begin() + 1 + idx, preorder.end());
+
+        // Recursion pe bharosa — dono subtrees khud ban jayenge
+        root->left  = buildTree(leftpre, leftIN);
+        root->right = buildTree(rightpre, rightIN);
+
+        return root;
+    }
+};
