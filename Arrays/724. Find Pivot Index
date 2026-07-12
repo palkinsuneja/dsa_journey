@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0;
+        int leftsum = 0;
+        //Nahi — 2-pointer wahan chamakta hai jahan dono siron se elements compare hote hain (sorted array pair-sum type). Yahan compare ho rahe hain sums — aur "left ka sum" sunte hi kaunsi ghanti bajni chahiye?
+        for(int i = 0 ; i<n ;i++){
+            sum = sum +nums[i];
+        }
+        for(int i =0 ; i< n; i++ ){
+            int rightsum = sum - leftsum - nums[i];
+
+            if(rightsum == leftsum) return i;
+            leftsum += nums[i];
+        }
+
+        return -1 ;
+    }
+};
