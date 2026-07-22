@@ -23,3 +23,50 @@ public:
         return max(solve(n1-1, caseA), solve(n2-1, caseB));
     }
 };
+
+/*
+ * LeetCode 213 - House Robber II (Medium)
+ *
+ * INTUITION: Circular constraint (ghar 0 aur last ghar padosi hain)
+ * ko todne ke liye, problem do NORMAL (non-circular) House Robber
+ * mein split hoti hai:
+ *   Case A: ghar 0 chhodo, range [1, n-1] pe normal rob
+ *   Case B: last ghar chhodo, range [0, n-2] pe normal rob
+ * Answer = max(Case A, Case B) — 198 ka solve() function bilkul
+ * as-is reuse hota hai, bas do alag sub-arrays + do alag parchiyan pe.
+ *
+ * KEY LEARNING: solve() ko EK parchi milti hai (parameter se), lekin
+ * rob() usse DO baar bulata hai, har baar apni nayi (array, parchi)
+ * jodi ke saath — kyunki caseA aur caseB do bilkul alag problems hain.
+ */
+
+
+class Solution {
+public:
+    // MEMOIZATION
+    int solve(int i,vector<int>& nums, vector<int>& dp ){
+        //int n = nums.size();
+        if(i==0) return nums[0];
+        if(i==1) return max(nums[0], nums[1]);
+
+        if(dp[i] != -1) return dp[i];
+
+        dp[i]= max(nums[i]+ solve(i-2,nums,dp) , solve(i-1 ,nums,dp) );
+
+        return dp[i];
+    }
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+
+        if (n==1) return nums[0];
+
+        vector<int> caseA(nums.begin()+1, nums.end()); // initializing and declaring caseA
+
+        vector<int> caseB(nums.begin(), nums.end()-1); // initializing and declaring caseB
+
+        vector<int> dp1(caseA.size(), -1); // caseA ki dp 
+        vector<int> dp2(caseB.size(), -1); //caseB ki dp 
+
+        return max(solve(caseA.size()-1, caseA, dp1), solve(caseB.size()-1, caseB, dp2)); //calling solve two times but this time with different dp 
+    }
+};
