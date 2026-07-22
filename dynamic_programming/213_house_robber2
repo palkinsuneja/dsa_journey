@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int solve(int i,vector<int>& nums ){
+        //int n = nums.size();
+        if(i==0) return nums[0];
+        if(i==1) return max(nums[0], nums[1]);
+
+        return max(nums[i]+ solve(i-2,nums) , solve(i-1 ,nums) );
+    }
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+
+        if (n==1) return nums[0];
+
+        vector<int> caseA(nums.begin()+1, nums.end());
+
+        vector<int> caseB(nums.begin(), nums.end()-1);
+
+        int n1= caseA.size();
+        int n2 = caseB.size();
+
+        return max(solve(n1-1, caseA), solve(n2-1, caseB));
+    }
+};
